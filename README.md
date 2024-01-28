@@ -1,2 +1,2 @@
-# Hyzenki.github.io
-My Web page
+# Hyzenki
+My personal github
