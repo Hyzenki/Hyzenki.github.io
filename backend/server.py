@@ -24,7 +24,8 @@ CORS(app, resources={
     r"/*": {
         "origins": [
             "http://localhost:5000",
-            "https://hyzenki.github.io"
+            "https://hyzenki.github.io",
+            "https://hyzenki.github.io/PLDG_ATP.html"
         ],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"]
