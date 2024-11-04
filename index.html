@@ -10,6 +10,7 @@
     <nav class="navbar">
         <div class="nav-content">
             <a href="index.html" class="nav-logo">Portfolio</a>
+            <button class="mobile-menu-button">☰</button>
             <div class="nav-links">
                 <a href="index.html" class="active">Home</a>
                 <a href="progetti.html">Progetti</a>
@@ -46,5 +47,25 @@
     <footer>
         <p>&copy; 2024 Il Mio Portfolio. Tutti i diritti riservati.</p>
     </footer>
+
+    <script>
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Chiudi il menu quando si clicca su un link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+
+        // Chiudi il menu quando si clicca fuori
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.navbar')) {
+                document.querySelector('.nav-links').classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html> 
