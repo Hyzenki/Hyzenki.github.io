@@ -7,6 +7,16 @@ import jwt
 import bcrypt
 from datetime import datetime, timedelta
 
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:5000", "http://127.0.0.1:5000", "https://hyzenki.github.io"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 # Configurazione del logging
 logging.basicConfig(
     level=logging.INFO,
@@ -21,12 +31,8 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
 CORS(app, resources={
-    r"/*": {
-        "origins": [
-            "http://localhost:5000",
-            "https://hyzenki.github.io",
-            "https://hyzenki.github.io/PLDG_ATP.html"
-        ],
+    r"/api/*": {
+        "origins": ["http://localhost:5000", "http://127.0.0.1:5000", "https://hyzenki.github.io"],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"]
     }
