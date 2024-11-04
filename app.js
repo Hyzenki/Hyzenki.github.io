@@ -15,7 +15,7 @@ const API_CONFIG = {
         baseUrl: 'http://localhost:5000'
     },
     production: {
-        baseUrl: 'https://tuo-server-produzione.com' // Sostituisci con l'URL del tuo server di produzione
+        baseUrl: 'https://hyzenki-github-io.onrender.com'
     }
 };
 
