@@ -1476,3 +1476,37 @@
  * Running on http://192.168.1.50:5000
 2024-11-04 04:01:05,322 - INFO - [33mPress CTRL+C to quit[0m
 2024-11-04 04:01:19,773 - INFO - 127.0.0.1 - - [04/Nov/2024 04:01:19] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:04:17,474 - INFO - 127.0.0.1 - - [04/Nov/2024 04:04:17] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:05:07,726 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:07] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:05:07,974 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:07] "GET /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:05:08,035 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:08] "OPTIONS /api/player/a/history HTTP/1.1" 200 -
+2024-11-04 04:05:08,284 - INFO - Trovate 3 partite per a
+2024-11-04 04:05:08,285 - INFO - Dati partite: [{'date': '2024-11-03 20:53:54', 'winner': 'a', 'loser': 'b', 'points_gained': 28, 'points_lost': 27, 'is_draw': False}, {'date': '2024-11-03 20:53:28', 'winner': 'f', 'loser': 'a', 'points_gained': 25, 'points_lost': 26, 'is_draw': False}, {'date': '2024-11-03 20:38:32', 'winner': 'a', 'loser': 'b', 'points_gained': 15, 'points_lost': 15, 'is_draw': True}]
+2024-11-04 04:05:08,285 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:08] "GET /api/player/a/history HTTP/1.1" 200 -
+2024-11-04 04:05:11,758 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:11] "GET /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:05:12,064 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:12] "OPTIONS /api/player/d/history HTTP/1.1" 200 -
+2024-11-04 04:05:12,330 - INFO - Trovate 1 partite per d
+2024-11-04 04:05:12,331 - INFO - Dati partite: [{'date': '2024-11-03 20:40:10', 'winner': 'c', 'loser': 'd', 'points_gained': 15, 'points_lost': 15, 'is_draw': True}]
+2024-11-04 04:05:12,331 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:12] "GET /api/player/d/history HTTP/1.1" 200 -
+2024-11-04 04:05:24,831 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:24] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:05:25,146 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:25] "GET /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:05:25,413 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:25] "OPTIONS /api/player/a/history HTTP/1.1" 200 -
+2024-11-04 04:05:25,459 - INFO - Trovate 3 partite per a
+2024-11-04 04:05:25,460 - INFO - Dati partite: [{'date': '2024-11-03 20:53:54', 'winner': 'a', 'loser': 'b', 'points_gained': 28, 'points_lost': 27, 'is_draw': False}, {'date': '2024-11-03 20:53:28', 'winner': 'f', 'loser': 'a', 'points_gained': 25, 'points_lost': 26, 'is_draw': False}, {'date': '2024-11-03 20:38:32', 'winner': 'a', 'loser': 'b', 'points_gained': 15, 'points_lost': 15, 'is_draw': True}]
+2024-11-04 04:05:25,462 - INFO - 127.0.0.1 - - [04/Nov/2024 04:05:25] "GET /api/player/a/history HTTP/1.1" 200 -
+2024-11-04 04:06:24,722 - INFO - 127.0.0.1 - - [04/Nov/2024 04:06:24] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:06:45,653 - INFO - 127.0.0.1 - - [04/Nov/2024 04:06:45] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:06:45,906 - INFO - 127.0.0.1 - - [04/Nov/2024 04:06:45] "GET /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:06:45,966 - INFO - 127.0.0.1 - - [04/Nov/2024 04:06:45] "OPTIONS /api/player/a/history HTTP/1.1" 200 -
+2024-11-04 04:06:46,216 - INFO - Trovate 3 partite per a
+2024-11-04 04:06:46,217 - INFO - Dati partite: [{'date': '2024-11-03 20:53:54', 'winner': 'a', 'loser': 'b', 'points_gained': 28, 'points_lost': 27, 'is_draw': False}, {'date': '2024-11-03 20:53:28', 'winner': 'f', 'loser': 'a', 'points_gained': 25, 'points_lost': 26, 'is_draw': False}, {'date': '2024-11-03 20:38:32', 'winner': 'a', 'loser': 'b', 'points_gained': 15, 'points_lost': 15, 'is_draw': True}]
+2024-11-04 04:06:46,218 - INFO - 127.0.0.1 - - [04/Nov/2024 04:06:46] "GET /api/player/a/history HTTP/1.1" 200 -
+2024-11-04 04:13:27,571 - INFO - 127.0.0.1 - - [04/Nov/2024 04:13:27] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:13:27,819 - INFO - 127.0.0.1 - - [04/Nov/2024 04:13:27] "GET /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:13:27,886 - INFO - 127.0.0.1 - - [04/Nov/2024 04:13:27] "OPTIONS /api/player/a/history HTTP/1.1" 200 -
+2024-11-04 04:13:28,129 - INFO - Trovate 3 partite per a
+2024-11-04 04:13:28,129 - INFO - Dati partite: [{'date': '2024-11-03 20:53:54', 'winner': 'a', 'loser': 'b', 'points_gained': 28, 'points_lost': 27, 'is_draw': False}, {'date': '2024-11-03 20:53:28', 'winner': 'f', 'loser': 'a', 'points_gained': 25, 'points_lost': 26, 'is_draw': False}, {'date': '2024-11-03 20:38:32', 'winner': 'a', 'loser': 'b', 'points_gained': 15, 'points_lost': 15, 'is_draw': True}]
+2024-11-04 04:13:28,129 - INFO - 127.0.0.1 - - [04/Nov/2024 04:13:28] "GET /api/player/a/history HTTP/1.1" 200 -
+2024-11-04 04:13:33,633 - INFO - 127.0.0.1 - - [04/Nov/2024 04:13:33] "OPTIONS /api/login HTTP/1.1" 200 -
+2024-11-04 04:13:40,960 - INFO - 127.0.0.1 - - [04/Nov/2024 04:13:40] "OPTIONS /api/login HTTP/1.1" 200 -
+2024-11-04 04:13:46,661 - INFO - 127.0.0.1 - - [04/Nov/2024 04:13:46] "OPTIONS /api/login HTTP/1.1" 200 -

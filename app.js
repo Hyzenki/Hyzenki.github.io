@@ -86,10 +86,9 @@ async function handleMatch(winner, loser, isDraw = false) {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/match', {
+        const result = await apiCall('/api/match', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
@@ -98,8 +97,6 @@ async function handleMatch(winner, loser, isDraw = false) {
                 draw: isDraw
             })
         });
-        
-        const result = await response.json();
         
         if (result.success) {
             const pointsExchange = result.pointsExchange;
@@ -161,11 +158,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Aggiungi queste funzioni
 async function showPlayerHistory(playerName) {
     try {
-        const rankingsResponse = await fetch('http://localhost:5000/api/rankings');
+        const rankingsResponse = await fetch(`${API_BASE_URL}/api/rankings`);
         const rankingsResult = await rankingsResponse.json();
         const playerData = rankingsResult.data.find(p => p.name === playerName);
 
-        const historyResponse = await fetch(`http://localhost:5000/api/player/${playerName}/history`);
+        const historyResponse = await fetch(`${API_BASE_URL}/api/player/${playerName}/history`);
         const historyResult = await historyResponse.json();
         
         if (historyResult.success && playerData) {
