@@ -21,15 +21,13 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
 CORS(app, resources={
-    r"/api/*": {
+    r"/*": {
         "origins": [
-            f"http://localhost:{port}",
-            "https://hyzenki.github.io",
-            "null"
+            "http://localhost:5000",
+            "https://hyzenki.github.io"
         ],
         "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True
+        "allow_headers": ["Content-Type", "Authorization"]
     }
 })
 
@@ -396,6 +394,13 @@ def get_player_history(player_name):
             'success': False,
             'error': str(e)
         }), 500
+
+@app.route('/')
+def home():
+    return jsonify({
+        'status': 'online',
+        'message': 'PLDG ATP Rankings API'
+    })
 
 if __name__ == '__main__':
     init_db()
