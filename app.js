@@ -19,7 +19,7 @@ const API_CONFIG = {
     }
 };
 
-const isProduction = window.location.hostname === 'hyzenki.github.io';
+const isProduction = !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1');
 const API_BASE_URL = isProduction ? API_CONFIG.production.baseUrl : API_CONFIG.development.baseUrl;
 
 async function loadRankings() {
@@ -338,7 +338,7 @@ document.addEventListener('keydown', function(event) {
 async function registerTrustedUser(username, password) {
     try {
         const token = localStorage.getItem('authToken');
-        const response = await fetch('http://localhost:5000/api/register', {
+        const response = await fetch(`${API_BASE_URL}/api/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -369,13 +369,13 @@ async function handleLogin(e) {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch(`${API_BASE_URL}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            credentials: 'include',
+            credentials: isProduction ? 'omit' : 'include',
             body: JSON.stringify({ username, password })
         });
 

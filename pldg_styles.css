@@ -860,3 +860,201 @@ main {
         padding-top: 60px;  /* Riduciamo leggermente il padding su mobile */
     }
 }
+
+/* Stili navbar per mobile */
+@media screen and (max-width: 768px) {
+    .navbar {
+        padding: 10px 0;
+    }
+
+    .nav-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .nav-links a {
+        padding: 5px 10px;
+        font-size: 0.9em;
+    }
+
+    /* Aggiustiamo l'header per mobile */
+    .header {
+        margin-top: 70px;  /* Spazio per la navbar */
+        padding: 10px 0;
+    }
+
+    .header-content {
+        padding: 0 10px;
+    }
+
+    /* Aggiustiamo il form di login per mobile */
+    .login-modal {
+        width: 90%;
+        max-width: 320px;
+        padding: 20px;
+        margin: 20px;
+        top: 50%;
+    }
+
+    /* Aggiustiamo la tabella dei rankings */
+    #rankingsTable {
+        margin-top: 10px;
+        font-size: 0.85em;
+    }
+
+    /* Aggiustiamo il form delle partite */
+    #matchForm {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    /* Aggiustiamo i dettagli del giocatore */
+    .player-details {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    /* Preveniamo sovrapposizioni */
+    .login-section, .register-section {
+        top: 0;
+        height: 100vh;
+        padding-top: 60px;
+        overflow-y: auto;
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Aggiustiamo i bottoni di chiusura */
+    .close-button {
+        width: 30px;
+        height: 30px;
+        font-size: 1.2em;
+    }
+}
+
+/* Stili per schermi molto piccoli */
+@media screen and (max-width: 480px) {
+    body {
+        padding-top: 120px;  /* Aumentiamo il padding per la navbar */
+    }
+
+    .header h1 {
+        font-size: 1.3em;
+    }
+
+    .login-link {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+
+    #rankingsTable th, #rankingsTable td {
+        padding: 6px;
+    }
+
+    .player-details-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+}
+
+/* Stili navbar per mobile */
+@media screen and (max-width: 768px) {
+    body {
+        padding-top: 140px;  /* Aumentiamo il padding per la navbar verticale */
+    }
+
+    .navbar {
+        height: auto;
+    }
+
+    .nav-content {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .nav-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .nav-links a {
+        font-size: 0.9em;
+        padding: 6px 12px;
+    }
+
+    .header {
+        margin-top: 0;
+        padding: 15px 0;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .header h1 {
+        font-size: 1.4em;
+        margin: 0;
+    }
+
+    h2 {
+        font-size: 1.2em;
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .auth-links {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .login-link {
+        font-size: 0.9em;
+        padding: 8px 16px;
+    }
+
+    #rankingsTable {
+        margin-top: 15px;
+        font-size: 0.85em;
+    }
+}
+
+/* Stili per schermi molto piccoli */
+@media screen and (max-width: 480px) {
+    body {
+        padding-top: 160px;
+    }
+
+    .nav-links {
+        gap: 5px;
+    }
+
+    .nav-links a {
+        font-size: 0.85em;
+        padding: 5px 10px;
+    }
+
+    .header h1 {
+        font-size: 1.2em;
+    }
+
+    #rankingsTable {
+        font-size: 0.8em;
+    }
+}
