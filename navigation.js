@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Chiudi menu quando si clicca su un link
-    navLinks.querySelectorAll('a').forEach(link => {
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('show');
         });
@@ -20,5 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!e.target.closest('.navbar')) {
             navLinks.classList.remove('show');
         }
+    });
+
+    // Gestisci la navigazione
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Chiudi il menu prima della navigazione
+            navLinks.classList.remove('show');
+        });
     });
 }); 

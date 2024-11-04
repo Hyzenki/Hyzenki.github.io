@@ -193,35 +193,31 @@ footer {
 
     .nav-links {
         display: none;
-        position: absolute;
+        position: fixed;
         top: 60px;
         left: 0;
         right: 0;
-        background-color: var(--white);
+        background-color: white;
         padding: 1rem;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        z-index: 999;
+    }
+
+    .nav-links.show {
+        display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1rem;
     }
 
-    .nav-links.active {
-        display: flex;
-    }
-
-    .nav-links a {
-        width: 100%;
-        text-align: center;
-        padding: 0.8rem;
-    }
-
-    body {
-        padding-top: 60px;
-    }
-
     .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        z-index: 1000;
         height: 60px;
-        min-height: auto;
     }
 
     .nav-content {
@@ -229,5 +225,6 @@ footer {
         justify-content: space-between;
         align-items: center;
         height: 60px;
+        padding: 0 1rem;
     }
 }
