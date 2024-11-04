@@ -121,18 +121,52 @@ footer {
 }
 
 @media (max-width: 768px) {
+    body {
+        padding-top: 120px;
+    }
+
+    .navbar {
+        height: auto;
+        min-height: 120px;
+    }
+
     .nav-content {
         flex-direction: column;
-        gap: 1rem;
+        padding: 10px;
+        height: auto;
     }
 
     .nav-links {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
         width: 100%;
-        text-align: center;
+        gap: 0.5rem;
+        padding: 5px 0;
     }
 
-    .hero h1 {
-        font-size: 2rem;
+    .nav-links a {
+        padding: 5px 10px;
+        font-size: 0.9em;
+        white-space: nowrap;
+    }
+
+    .container {
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 140px;
+    }
+
+    .navbar {
+        min-height: 140px;
+    }
+
+    .nav-links a {
+        font-size: 0.85em;
+        padding: 4px 8px;
     }
 }
