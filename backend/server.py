@@ -309,7 +309,6 @@ def record_match():
 
 @app.route('/api/register', methods=['POST'])
 def register_user():
-    # Verifica che la richiesta provenga da un admin
     auth_token = request.headers.get('Authorization')
     if not auth_token or 'admin-token' not in auth_token:
         return jsonify({
@@ -320,14 +319,18 @@ def register_user():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    is_trusted = data.get('is_trusted', True)  # Default a True per utenti affidati
+    is_trusted = data.get('is_trusted', True)
+
+    # Hash della password
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
 
     try:
         with sqlite3.connect(DB_PATH) as conn:
             conn.execute('''
-                INSERT INTO users (username, password, is_trusted)
+                INSERT INTO users (username, password_hash, is_trusted)
                 VALUES (?, ?, ?)
-            ''', (username, password, is_trusted))
+            ''', (username, hashed_password, is_trusted))
             
         return jsonify({
             'success': True,
