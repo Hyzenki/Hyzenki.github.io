@@ -1530,3 +1530,39 @@
 2024-11-04 04:30:48,373 - INFO - 127.0.0.1 - - [04/Nov/2024 04:30:48] "OPTIONS /api/rankings HTTP/1.1" 200 -
 2024-11-04 04:31:02,578 - INFO - 127.0.0.1 - - [04/Nov/2024 04:31:02] "OPTIONS /api/rankings HTTP/1.1" 200 -
 2024-11-04 04:31:41,758 - INFO - 127.0.0.1 - - [04/Nov/2024 04:31:41] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:33:51,629 - INFO - 127.0.0.1 - - [04/Nov/2024 04:33:51] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:33:54,005 - INFO - 127.0.0.1 - - [04/Nov/2024 04:33:54] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:33:59,660 - INFO - Database inizializzato con successo
+2024-11-04 04:33:59,676 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.50:5000
+2024-11-04 04:33:59,676 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-04 04:34:03,358 - INFO - 127.0.0.1 - - [04/Nov/2024 04:34:03] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:39:11,765 - INFO - Database inizializzato con successo
+2024-11-04 04:39:11,780 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.50:5000
+2024-11-04 04:39:11,781 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-04 04:39:15,525 - INFO - 127.0.0.1 - - [04/Nov/2024 04:39:15] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:41:41,043 - INFO - 127.0.0.1 - - [04/Nov/2024 04:41:41] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:41:46,413 - INFO - Database inizializzato con successo
+2024-11-04 04:41:46,426 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.50:5000
+2024-11-04 04:41:46,426 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-04 04:41:54,853 - INFO - 127.0.0.1 - - [04/Nov/2024 04:41:54] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:45:03,828 - INFO - Database inizializzato con successo
+2024-11-04 04:45:03,840 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.50:5000
+2024-11-04 04:45:03,842 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-04 04:45:09,916 - INFO - 127.0.0.1 - - [04/Nov/2024 04:45:09] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:45:10,226 - INFO - 127.0.0.1 - - [04/Nov/2024 04:45:10] "GET /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:45:13,188 - INFO - 127.0.0.1 - - [04/Nov/2024 04:45:13] "GET /api/rankings HTTP/1.1" 200 -
+2024-11-04 04:45:13,499 - INFO - Trovate 3 partite per a
+2024-11-04 04:45:13,499 - INFO - Dati partite: [{'date': '2024-11-03 20:53:54', 'winner': 'a', 'loser': 'b', 'points_gained': 28, 'points_lost': 27, 'is_draw': False}, {'date': '2024-11-03 20:53:28', 'winner': 'f', 'loser': 'a', 'points_gained': 25, 'points_lost': 26, 'is_draw': False}, {'date': '2024-11-03 20:38:32', 'winner': 'a', 'loser': 'b', 'points_gained': 15, 'points_lost': 15, 'is_draw': True}]
+2024-11-04 04:45:13,500 - INFO - 127.0.0.1 - - [04/Nov/2024 04:45:13] "GET /api/player/a/history HTTP/1.1" 200 -

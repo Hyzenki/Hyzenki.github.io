@@ -10,13 +10,24 @@ from datetime import datetime, timedelta
 from flask_cors import CORS
 
 app = Flask(__name__)
+port = int(os.environ.get("PORT", 5000))
+
 CORS(app, resources={
-    r"/*": {
-        "origins": ["http://localhost:5000", "http://127.0.0.1:5000", "https://hyzenki.github.io"],
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
+    r"/api/*": {
+        "origins": [
+            "null",
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "https://hyzenki.github.io"
+        ],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "Accept"],
+        "supports_credentials": True
     }
 })
+
 # Configurazione del logging
 logging.basicConfig(
     level=logging.INFO,
@@ -27,16 +38,6 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
-
-app = Flask(__name__)
-port = int(os.environ.get("PORT", 5000))
-CORS(app, resources={
-    r"/api/*": {
-        "origins": ["http://localhost:5000", "http://127.0.0.1:5000", "https://hyzenki.github.io"],
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
 
 DB_PATH = 'tennis.db'
 
