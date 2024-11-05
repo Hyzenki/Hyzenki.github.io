@@ -18,8 +18,8 @@ CORS(app, resources={
             "null",
             "http://localhost:5173",
             "http://127.0.0.1:5173",
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
+            "http://localhost:5000",
+            "http://127.0.0.1:5000",
             "https://hyzenki.github.io"
         ],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -412,4 +412,4 @@ def home():
 
 if __name__ == '__main__':
     init_db()
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=5000, debug=True)

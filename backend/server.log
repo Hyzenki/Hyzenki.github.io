@@ -1625,3 +1625,21 @@
 2024-11-04 05:00:20,291 - INFO - 127.0.0.1 - - [04/Nov/2024 05:00:20] "GET /api/player/a/history HTTP/1.1" 200 -
 2024-11-04 05:05:58,937 - INFO - 127.0.0.1 - - [04/Nov/2024 05:05:58] "OPTIONS /api/login HTTP/1.1" 200 -
 2024-11-04 05:05:59,492 - INFO - 127.0.0.1 - - [04/Nov/2024 05:05:59] "POST /api/login HTTP/1.1" 200 -
+2024-11-05 02:14:10,318 - INFO - Database inizializzato con successo
+2024-11-05 02:14:11,203 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.26:5000
+2024-11-05 02:14:11,203 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 02:14:16,842 - INFO - 127.0.0.1 - - [05/Nov/2024 02:14:16] "GET / HTTP/1.1" 200 -
+2024-11-05 02:14:17,105 - INFO - 127.0.0.1 - - [05/Nov/2024 02:14:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-11-05 02:16:55,056 - INFO - Database inizializzato con successo
+2024-11-05 02:16:55,931 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.26:5000
+2024-11-05 02:16:55,932 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-05 02:16:55,935 - INFO -  * Restarting with stat
+2024-11-05 02:16:56,158 - INFO - Database inizializzato con successo
+2024-11-05 02:16:56,167 - WARNING -  * Debugger is active!
+2024-11-05 02:16:56,176 - INFO -  * Debugger PIN: 655-925-424
