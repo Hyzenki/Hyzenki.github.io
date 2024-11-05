@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let isMenuOpen = false;
 
     function toggleMenu(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         isMenuOpen = !isMenuOpen;
         navLinks.classList.toggle('show');
         mobileMenuButton.setAttribute('aria-expanded', isMenuOpen.toString());
