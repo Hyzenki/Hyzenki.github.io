@@ -70,7 +70,6 @@ function updateRankingsTable(players) {
             <td class="text-center">${Math.round(player.points)}</td>
             <td class="text-center">${player.matches_won}</td>
             <td class="text-center">${player.matches_lost}</td>
-            <td class="text-center">${player.matches_drawn}</td>
         `;
         
         row.cells[1].appendChild(playerLink);
@@ -187,9 +186,6 @@ async function showPlayerHistory(playerName) {
                         <strong>Sconfitte:</strong> ${playerData.matches_lost}
                     </div>
                     <div class="stat-item text-center">
-                        <strong>Pareggi:</strong> ${playerData.matches_drawn}
-                    </div>
-                    <div class="stat-item text-center">
                         <strong>% Vittoria:</strong> ${calculateWinRate(playerData.matches_won, playerData.matches_lost, playerData.matches_drawn)}%
                     </div>
                     <div class="stat-item text-center">
@@ -208,6 +204,7 @@ async function showPlayerHistory(playerName) {
                                 <th>Avversario</th>
                                 <th>Risultato</th>
                                 <th>Punti</th>
+                                <th>Azioni</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -217,11 +214,7 @@ async function showPlayerHistory(playerName) {
                                 
                                 console.log('Match data:', match);
                                 
-                                if (match.is_draw === 1 || match.is_draw === true) {
-                                    result = 'Pareggio';
-                                    opponent = match.winner === playerName ? match.loser : match.winner;
-                                    points = `+${match.points_gained || match.winner_points_change}`;
-                                } else if (match.winner === playerName) {
+                                if (match.winner === playerName) {
                                     result = 'Vittoria';
                                     opponent = match.loser;
                                     points = `+${match.points_gained || match.winner_points_change}`;
@@ -237,6 +230,11 @@ async function showPlayerHistory(playerName) {
                                         <td>${opponent}</td>
                                         <td class="${result.toLowerCase()}-text">${result}</td>
                                         <td class="${points.startsWith('+') ? 'points-gained' : 'points-lost'}">${points}</td>
+                                        <td>
+                                            <button onclick="deleteMatch('${match.id}')" class="delete-match-btn">
+                                                <i class="fas fa-trash"></i> Elimina
+                                            </button>
+                                        </td>
                                     </tr>
                                 `;
                             }).join('')}
@@ -254,6 +252,42 @@ async function showPlayerHistory(playerName) {
         }
     } catch (error) {
         console.error('Errore nella richiesta:', error);
+        alert('Errore nella comunicazione con il server');
+    }
+}
+
+async function deleteMatch(matchId) {
+    if (!confirm('Sei sicuro di voler eliminare questa partita? Questa azione non può essere annullata.')) {
+        return;
+    }
+
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        alert('Sessione scaduta. Effettua nuovamente il login.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/match/${matchId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('Partita eliminata con successo');
+            await loadRankings();
+            // Ricarica lo storico del giocatore corrente
+            const playerName = document.getElementById('playerName').textContent.replace('Statistiche di ', '');
+            await showPlayerHistory(playerName);
+        } else {
+            alert('Errore nell\'eliminazione della partita: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Errore:', error);
         alert('Errore nella comunicazione con il server');
     }
 }
@@ -288,9 +322,7 @@ function createPointsChart(matches, playerName) {
     const sortedMatches = [...matches].sort((a, b) => new Date(a.date) - new Date(b.date));
 
     sortedMatches.forEach(match => {
-        if (match.is_draw === 1 || match.is_draw === true) {
-            currentPoints += match.points_gained;
-        } else if (match.winner === playerName) {
+       if (match.winner === playerName) {
             currentPoints += match.points_gained;
         } else {
             currentPoints -= match.points_lost;
