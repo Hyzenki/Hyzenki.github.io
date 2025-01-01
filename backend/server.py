@@ -6,6 +6,7 @@ import logging
 import jwt
 import bcrypt
 from datetime import datetime, timedelta
+from functools import wraps
 
 from flask_cors import CORS
 
@@ -103,28 +104,14 @@ def init_db():
         logger.error(f"Errore durante l'inizializzazione del database: {str(e)}")
         raise
 
-def calculate_points_change(winner_points, loser_points, is_draw=False):
+def calculate_points_change(winner_points, loser_points):
     # Punti base
     base_points = 25
-    base_draw_points = 15
     
     # Calcola la differenza di punti
     points_diff = abs(winner_points - loser_points)
-    ratio = min(points_diff / 400, 1.5)  # Limita il bonus/malus al 150%
-    
-    if is_draw:
-        # In caso di pareggio
-        if winner_points > loser_points:
-            # Il giocatore più debole (loser) ottiene un bonus
-            return {
-                'won': round(base_draw_points),  # Per il più forte
-                'lost': round(base_draw_points * (1 + ratio * 0.3))  # Per il più debole (+30% max)
-            }
-        else:
-            return {
-                'won': round(base_draw_points * (1 + ratio * 0.3)),  # Per il più debole (+30% max)
-                'lost': round(base_draw_points)  # Per il più forte
-            }
+    ratio = min(points_diff ,base_points*1.5)  # Limita il bonus/malus al 150%
+  
     
     # In caso di vittoria/sconfitta
     if winner_points < loser_points:
@@ -221,6 +208,7 @@ def login():
         }), 500
 
 def require_auth(f):
+    @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('Authorization')
         if not token or not token.startswith('Bearer '):
@@ -259,7 +247,7 @@ def record_match():
             loser_id, loser_points = loser_data
 
             # Calcola i punti da scambiare
-            points = calculate_points_change(winner_points, loser_points, is_draw)
+            points = calculate_points_change(winner_points, loser_points)
 
             if is_draw:
                 # Aggiorna i punti per il pareggio
@@ -290,9 +278,9 @@ def record_match():
 
             # Registra il match
             conn.execute('''
-                INSERT INTO matches (winner_id, loser_id, is_draw, winner_points_change, loser_points_change)
+                INSERT INTO matches (winner_id, loser_id, winner_points_change, loser_points_change)
                 VALUES (?, ?, ?, ?, ?)
-            ''', (winner_id, loser_id, is_draw, points['won'], points['lost']))
+            ''', (winner_id, loser_id, points['won'], points['lost']))
 
             # Aggiorna la classifica
             cursor = conn.execute('SELECT * FROM players ORDER BY points DESC')
@@ -306,7 +294,6 @@ def record_match():
                     'points': row[2],
                     'matches_won': row[3],
                     'matches_lost': row[4],
-                    'matches_drawn': row[5]
                 } for row in rankings]
             })
 
@@ -367,7 +354,6 @@ def get_player_history(player_name):
                     l.name as loser_name, 
                     m.winner_points_change, 
                     m.loser_points_change,
-                    m.is_draw
                 FROM matches m
                 JOIN players w ON m.winner_id = w.id
                 JOIN players l ON m.loser_id = l.id
@@ -386,7 +372,6 @@ def get_player_history(player_name):
                     'loser': match[2],
                     'points_gained': match[3] if match[1] == player_name else match[4],
                     'points_lost': match[4] if match[1] == player_name else match[3],
-                    'is_draw': bool(match[5])
                 }
                 formatted_matches.append(formatted_match)
 
@@ -409,6 +394,66 @@ def home():
         'status': 'online',
         'message': 'PLDG ATP Rankings API'
     })
+
+
+@app.route('/api/match/<int:match_id>', methods=['DELETE'])
+@require_auth
+def delete_match(match_id):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            
+            # Ottieni i dettagli del match prima di eliminarlo
+            cursor.execute('''
+                SELECT 
+                    m.winner_id, m.loser_id, 
+                    m.winner_points_change, m.loser_points_change,
+                    m.is_draw
+                FROM matches m
+                WHERE m.id = ?
+            ''', (match_id,))
+            
+            match = cursor.fetchone()
+            if not match:
+                return jsonify({'success': False, 'error': 'Partita non trovata'}), 404
+                
+            winner_id, loser_id, winner_points, loser_points, is_draw = match
+            
+            # Ripristina i punti e le statistiche dei giocatori
+            if is_draw:
+                conn.execute('''
+                    UPDATE players 
+                    SET points = points - ?, matches_drawn = matches_drawn - 1 
+                    WHERE id = ?
+                ''', (winner_points, winner_id))
+                
+                conn.execute('''
+                    UPDATE players 
+                    SET points = points - ?, matches_drawn = matches_drawn - 1 
+                    WHERE id = ?
+                ''', (loser_points, loser_id))
+            else:
+                conn.execute('''
+                    UPDATE players 
+                    SET points = points - ?, matches_won = matches_won - 1 
+                    WHERE id = ?
+                ''', (winner_points, winner_id))
+                
+                conn.execute('''
+                    UPDATE players 
+                    SET points = points + ?, matches_lost = matches_lost - 1 
+                    WHERE id = ?
+                ''', (loser_points, loser_id))
+            
+            # Elimina il match
+            conn.execute('DELETE FROM matches WHERE id = ?', (match_id,))
+            
+            return jsonify({'success': True})
+            
+    except Exception as e:
+        logger.error(f"Errore nell'eliminazione del match: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+    
 
 if __name__ == '__main__':
     init_db()
