@@ -1,14 +1,12 @@
 from flask import Flask, request, jsonify
-import sqlite3
-from flask_cors import CORS
-import os
-import logging
-import jwt
-import bcrypt
-from datetime import datetime, timedelta
+from flask_cors import CORS, cross_origin
 from functools import wraps
-
-from flask_cors import CORS
+import sqlite3
+import jwt
+import datetime
+import logging
+import os
+import bcrypt
 
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
@@ -69,7 +67,6 @@ def init_db():
                     points REAL DEFAULT 1200,
                     matches_won INTEGER DEFAULT 0,
                     matches_lost INTEGER DEFAULT 0,
-                    matches_drawn INTEGER DEFAULT 0,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             ''')
@@ -80,7 +77,6 @@ def init_db():
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     winner_id INTEGER,
                     loser_id INTEGER,
-                    is_draw BOOLEAN DEFAULT 0,
                     winner_points_change INTEGER,
                     loser_points_change INTEGER,
                     match_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -129,7 +125,7 @@ def calculate_points_change(winner_points, loser_points):
     }
 
 def generate_token(user_id, is_admin):
-    expiration = datetime.utcnow() + timedelta(hours=JWT_EXPIRATION)
+    expiration = datetime.datetime.utcnow() + datetime.timedelta(hours=JWT_EXPIRATION)
     return jwt.encode(
         {
             'user_id': user_id,
@@ -230,7 +226,6 @@ def record_match():
         data = request.get_json()
         winner = data['winner']
         loser = data['loser']
-        is_draw = data.get('draw', False)
 
         with sqlite3.connect(DB_PATH) as conn:
             # Inserisci o ignora i nuovi giocatori
@@ -246,59 +241,34 @@ def record_match():
             winner_id, winner_points = winner_data
             loser_id, loser_points = loser_data
 
-            # Calcola i punti da scambiare
             points = calculate_points_change(winner_points, loser_points)
 
-            if is_draw:
-                # Aggiorna i punti per il pareggio
-                conn.execute('''
-                    UPDATE players 
-                    SET points = points + ?, matches_drawn = matches_drawn + 1 
-                    WHERE id = ?
-                ''', (points['won'], winner_id))
-                
-                conn.execute('''
-                    UPDATE players 
-                    SET points = points + ?, matches_drawn = matches_drawn + 1 
-                    WHERE id = ?
-                ''', (points['lost'], loser_id))
-            else:
-                # Aggiorna i punti per vittoria/sconfitta
-                conn.execute('''
-                    UPDATE players 
-                    SET points = points + ?, matches_won = matches_won + 1 
-                    WHERE id = ?
-                ''', (points['won'], winner_id))
-                
-                conn.execute('''
-                    UPDATE players 
-                    SET points = MAX(0, points - ?), matches_lost = matches_lost + 1 
-                    WHERE id = ?
-                ''', (points['lost'], loser_id))
+            # Aggiorna i punti per vittoria/sconfitta
+            conn.execute('''
+                UPDATE players 
+                SET points = points + ?, matches_won = matches_won + 1 
+                WHERE id = ?
+            ''', (points['won'], winner_id))
+            
+            conn.execute('''
+                UPDATE players 
+                SET points = MAX(0, points - ?), matches_lost = matches_lost + 1 
+                WHERE id = ?
+            ''', (points['lost'], loser_id))
 
             # Registra il match
             conn.execute('''
                 INSERT INTO matches (winner_id, loser_id, winner_points_change, loser_points_change)
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?)
             ''', (winner_id, loser_id, points['won'], points['lost']))
 
-            # Aggiorna la classifica
-            cursor = conn.execute('SELECT * FROM players ORDER BY points DESC')
-            rankings = cursor.fetchall()
-            
             return jsonify({
                 'success': True,
-                'pointsExchange': points,
-                'data': [{
-                    'name': row[1],
-                    'points': row[2],
-                    'matches_won': row[3],
-                    'matches_lost': row[4],
-                } for row in rankings]
+                'pointsExchange': points
             })
 
     except Exception as e:
-        print(f"Errore: {str(e)}")
+        logger.error(f"Errore nella registrazione del match: {str(e)}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/register', methods=['POST'])
@@ -349,11 +319,14 @@ def get_player_history(player_name):
             cursor = conn.cursor()
             cursor.execute('''
                 SELECT 
-                    m.match_date, 
-                    w.name as winner_name, 
-                    l.name as loser_name, 
-                    m.winner_points_change, 
+                    m.id,
+                    m.match_date,
+                    m.winner_id,
+                    m.loser_id,
+                    m.winner_points_change,
                     m.loser_points_change,
+                    w.name as winner_name,
+                    l.name as loser_name
                 FROM matches m
                 JOIN players w ON m.winner_id = w.id
                 JOIN players l ON m.loser_id = l.id
@@ -362,20 +335,16 @@ def get_player_history(player_name):
             ''', (player_name, player_name))
             
             matches = cursor.fetchall()
-            logger.info(f"Trovate {len(matches)} partite per {player_name}")
             
-            formatted_matches = []
-            for match in matches:
-                formatted_match = {
-                    'date': match[0],
-                    'winner': match[1],
-                    'loser': match[2],
-                    'points_gained': match[3] if match[1] == player_name else match[4],
-                    'points_lost': match[4] if match[1] == player_name else match[3],
-                }
-                formatted_matches.append(formatted_match)
-
-            logger.info(f"Dati partite: {formatted_matches}")
+            formatted_matches = [{
+                'id': match[0],
+                'date': match[1],
+                'winner': match[6],
+                'loser': match[7],
+                'winner_points_change': match[4],
+                'loser_points_change': match[5]
+            } for match in matches]
+            
             return jsonify({
                 'success': True,
                 'matches': formatted_matches
@@ -383,10 +352,7 @@ def get_player_history(player_name):
             
     except Exception as e:
         logger.error(f"Errore nel recupero dello storico: {str(e)}")
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/')
 def home():
@@ -396,54 +362,49 @@ def home():
     })
 
 
-@app.route('/api/match/<int:match_id>', methods=['DELETE'])
+@app.route('/api/match/<int:match_id>', methods=['DELETE', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 @require_auth
 def delete_match(match_id):
+    if request.method == 'OPTIONS':
+        return '', 200
+        
     try:
+        # Verifica che l'utente sia autenticato
+        if not request.user:
+            return jsonify({
+                'success': False, 
+                'error': 'Devi effettuare il login per eliminare le partite'
+            }), 401
+
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             
-            # Ottieni i dettagli del match prima di eliminarlo
+            # Ottieni i dettagli del match
             cursor.execute('''
-                SELECT 
-                    m.winner_id, m.loser_id, 
-                    m.winner_points_change, m.loser_points_change,
-                    m.is_draw
-                FROM matches m
-                WHERE m.id = ?
+                SELECT winner_id, loser_id, winner_points_change, loser_points_change
+                FROM matches
+                WHERE id = ?
             ''', (match_id,))
             
             match = cursor.fetchone()
             if not match:
                 return jsonify({'success': False, 'error': 'Partita non trovata'}), 404
                 
-            winner_id, loser_id, winner_points, loser_points, is_draw = match
+            winner_id, loser_id, winner_points, loser_points = match
             
             # Ripristina i punti e le statistiche dei giocatori
-            if is_draw:
-                conn.execute('''
-                    UPDATE players 
-                    SET points = points - ?, matches_drawn = matches_drawn - 1 
-                    WHERE id = ?
-                ''', (winner_points, winner_id))
-                
-                conn.execute('''
-                    UPDATE players 
-                    SET points = points - ?, matches_drawn = matches_drawn - 1 
-                    WHERE id = ?
-                ''', (loser_points, loser_id))
-            else:
-                conn.execute('''
-                    UPDATE players 
-                    SET points = points - ?, matches_won = matches_won - 1 
-                    WHERE id = ?
-                ''', (winner_points, winner_id))
-                
-                conn.execute('''
-                    UPDATE players 
-                    SET points = points + ?, matches_lost = matches_lost - 1 
-                    WHERE id = ?
-                ''', (loser_points, loser_id))
+            conn.execute('''
+                UPDATE players 
+                SET points = points - ?, matches_won = matches_won - 1 
+                WHERE id = ?
+            ''', (winner_points, winner_id))
+            
+            conn.execute('''
+                UPDATE players 
+                SET points = points + ?, matches_lost = matches_lost - 1 
+                WHERE id = ?
+            ''', (loser_points, loser_id))
             
             # Elimina il match
             conn.execute('DELETE FROM matches WHERE id = ?', (match_id,))
