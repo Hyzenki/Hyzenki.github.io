@@ -68,18 +68,23 @@
     </div>
 
     <div id="matchSection" style="display: none;">
-        <h2>Registra Partita</h2>
+        <h2>Gestione Partite</h2>
         <form id="matchForm">
             <input type="text" id="player1" placeholder="Nome Giocatore 1" required>
-            
             <input type="text" id="player2" placeholder="Nome Giocatore 2" required>
-            
             <select id="result" required>
-                <option value="1">Vittoria Player 1</option>
-                <option value="2">Vittoria Player 2</option>
+                <option value="1">Vittoria Giocatore 1</option>
+                <option value="2">Vittoria Giocatore 2</option>
             </select>
-            
             <button type="submit">Registra Partita</button>
+        </form>
+
+        <h3>Elimina Partita</h3>
+        <form id="deleteMatchForm">
+            <select id="matchSelect" required>
+                <option value="">Seleziona una partita</option>
+            </select>
+            <button type="submit">Elimina Partita</button>
         </form>
     </div>
 
