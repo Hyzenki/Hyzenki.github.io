@@ -19,8 +19,15 @@ const API_CONFIG = {
     }
 };
 
-const isProduction = !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1');
+// Modifica la logica per il rilevamento dell'ambiente
+const isProduction = window.location.hostname === 'hyzenki.github.io';
 const API_BASE_URL = isProduction ? API_CONFIG.production.baseUrl : API_CONFIG.development.baseUrl;
+
+console.log('Ambiente:', {
+    hostname: window.location.hostname,
+    isProduction: isProduction,
+    apiBaseUrl: API_BASE_URL
+});
 
 async function loadRankings() {
     try {
@@ -77,7 +84,7 @@ function updateRankingsTable(players) {
     });
 }
 
-async function handleMatch(winner, loser, isDraw = false) {
+async function handleMatch(winner, loser) {
     const token = localStorage.getItem('authToken');
     if (!token) {
         alert('Devi effettuare il login per registrare le partite');
@@ -92,19 +99,13 @@ async function handleMatch(winner, loser, isDraw = false) {
             },
             body: JSON.stringify({
                 winner: winner,
-                loser: loser,
-                draw: isDraw
+                loser: loser
             })
         });
         
         if (result.success) {
             const pointsExchange = result.pointsExchange;
-            let message;
-            if (isDraw) {
-                message = `Pareggio registrato!\n${winner} ha guadagnato ${pointsExchange.won} punti\n${loser} ha guadagnato ${pointsExchange.lost} punti`;
-            } else {
-                message = `Match registrato!\n${winner} ha guadagnato ${pointsExchange.won} punti\n${loser} ha perso ${pointsExchange.lost} punti`;
-            }
+            const message = `Match registrato!\n${winner} ha guadagnato ${pointsExchange.won} punti\n${loser} ha perso ${pointsExchange.lost} punti`;
             alert(message);
             await loadRankings();
         } else {
@@ -144,12 +145,60 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        if (result === '0') {
-            await handleMatch(player1, player2, true);
-        } else if (result === '1') {
-            await handleMatch(player1, player2, false);
+        if (result === '1') {
+            await handleMatch(player1, player2);
         } else {
-            await handleMatch(player2, player1, false);
+            await handleMatch(player2, player1);
+        }
+    });
+
+    // Aggiungi questo nuovo event listener
+    document.getElementById('deleteMatchForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const matchId = document.getElementById('matchSelect').value;
+
+        if (!matchId) {
+            alert('Seleziona una partita da eliminare');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                alert('Devi effettuare il login per eliminare una partita');
+                return;
+            }
+
+            if (!confirm('Sei sicuro di voler eliminare questa partita? Questa azione non può essere annullata.')) {
+                return;
+            }
+
+            const response = await fetch(`${API_BASE_URL}/api/match/${matchId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                },
+                mode: 'cors',
+                credentials: 'include'
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Partita eliminata con successo');
+                await loadRankings();
+                // Ricarica lo storico del giocatore corrente
+                const playerName = document.getElementById('playerName').textContent;
+                if (playerName) {
+                    await showPlayerHistory(playerName.replace('Statistiche di ', ''));
+                }
+            } else {
+                alert('Errore nell\'eliminazione della partita: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Errore:', error);
+            alert('Errore nella comunicazione con il server');
         }
     });
 });
@@ -157,6 +206,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Aggiungi queste funzioni
 async function showPlayerHistory(playerName) {
     try {
+        const token = localStorage.getItem('authToken');
+        const isLoggedIn = token && token !== 'undefined' && token !== 'null';
+        
         const rankingsResponse = await fetch(`${API_BASE_URL}/api/rankings`);
         const rankingsResult = await rankingsResponse.json();
         const playerData = rankingsResult.data.find(p => p.name === playerName);
@@ -177,7 +229,7 @@ async function showPlayerHistory(playerName) {
             playerStats.innerHTML = `
                 <div class="stats-container">
                     <div class="stat-item text-center">
-                        <strong>Partite Totali:</strong> ${playerData.matches_won + playerData.matches_lost + playerData.matches_drawn}
+                        <strong>Partite Totali:</strong> ${playerData.matches_won + playerData.matches_lost}
                     </div>
                     <div class="stat-item text-center">
                         <strong>Vittorie:</strong> ${playerData.matches_won}
@@ -197,54 +249,53 @@ async function showPlayerHistory(playerName) {
             // Tabella dello storico partite
             playerHistory.innerHTML = `
                 <div class="match-history-wrapper">
-                    <table class="match-history-table">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Avversario</th>
-                                <th>Risultato</th>
-                                <th>Punti</th>
-                                <th>Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${historyResult.matches.map(match => {
-                                const matchDate = new Date(match.date).toLocaleString('it-IT');
-                                let result, opponent, points;
-                                
-                                console.log('Match data:', match);
-                                
-                                if (match.winner === playerName) {
-                                    result = 'Vittoria';
-                                    opponent = match.loser;
-                                    points = `+${match.points_gained || match.winner_points_change}`;
-                                } else {
-                                    result = 'Sconfitta';
-                                    opponent = match.winner;
-                                    points = `-${match.points_lost || match.loser_points_change}`;
-                                }
+                    <div class="tables-container">
+                        <table class="match-history-table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Avversario</th>
+                                    <th>Risultato</th>
+                                    <th>Punti</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${historyResult.matches.map(match => {
+                                    const matchDate = new Date(match.date).toLocaleString('it-IT');
+                                    let result, opponent, points;
+                                    
+                                    if (match.winner === playerName) {
+                                        result = 'Vittoria';
+                                        opponent = match.loser;
+                                        points = `+${match.points_gained || match.winner_points_change}`;
+                                    } else {
+                                        result = 'Sconfitta';
+                                        opponent = match.winner;
+                                        points = `-${match.points_lost || match.loser_points_change}`;
+                                    }
 
-                                return `
-                                    <tr class="${result.toLowerCase()}-row">
-                                        <td>${matchDate}</td>
-                                        <td>${opponent}</td>
-                                        <td class="${result.toLowerCase()}-text">${result}</td>
-                                        <td class="${points.startsWith('+') ? 'points-gained' : 'points-lost'}">${points}</td>
-                                        <td>
-                                            <button onclick="deleteMatch('${match.id}')" class="delete-match-btn">
-                                                <i class="fas fa-trash"></i> Elimina
-                                            </button>
-                                        </td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
+                                    return `
+                                        <tr class="${result.toLowerCase()}-row">
+                                            <td>${matchDate}</td>
+                                            <td>${opponent}</td>
+                                            <td class="${result.toLowerCase()}-text">${result}</td>
+                                            <td class="${points.startsWith('+') ? 'points-gained' : 'points-lost'}">${points}</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             `;
 
             createPointsChart(historyResult.matches, playerName);
             playerDetails.scrollIntoView({ behavior: 'smooth' });
+
+            // Aggiungi questa chiamata per caricare le partite nel menu a tendina
+            if (isLoggedIn) {
+                await loadMatchesForDeletion();
+            }
         } else {
             playerHistory.innerHTML = '<p>Nessuna partita trovata per questo giocatore.</p>';
             playerStats.innerHTML = '<p>Nessuna statistica disponibile</p>';
@@ -257,13 +308,13 @@ async function showPlayerHistory(playerName) {
 }
 
 async function deleteMatch(matchId) {
-    if (!confirm('Sei sicuro di voler eliminare questa partita? Questa azione non può essere annullata.')) {
+    const token = localStorage.getItem('authToken');
+    if (!token || token === 'undefined' || token === 'null') {
+        alert('Devi effettuare il login per eliminare una partita');
         return;
     }
 
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-        alert('Sessione scaduta. Effettua nuovamente il login.');
+    if (!confirm('Sei sicuro di voler eliminare questa partita? Questa azione non può essere annullata.')) {
         return;
     }
 
@@ -272,17 +323,23 @@ async function deleteMatch(matchId) {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            },
+            mode: 'cors',
+            credentials: isProduction ? 'omit' : 'include'
         });
 
         const result = await response.json();
         if (result.success) {
             alert('Partita eliminata con successo');
             await loadRankings();
+            await loadAllMatches();
             // Ricarica lo storico del giocatore corrente
-            const playerName = document.getElementById('playerName').textContent.replace('Statistiche di ', '');
-            await showPlayerHistory(playerName);
+            const playerName = document.getElementById('playerName').textContent;
+            if (playerName) {
+                await showPlayerHistory(playerName.replace('Statistiche di ', ''));
+            }
         } else {
             alert('Errore nell\'eliminazione della partita: ' + result.error);
         }
@@ -310,22 +367,27 @@ function createPointsChart(matches, playerName) {
         currentChart.destroy();
     }
 
-    const ctx = document.getElementById('pointsChart');
-    if (!ctx) return;
+    const chartContainer = document.getElementById('pointsChart');
+    if (!chartContainer) return;
 
+    // Pulisci il contenitore
+    chartContainer.innerHTML = '';
+    
+    // Crea un nuovo canvas con dimensioni specifiche
     const canvas = document.createElement('canvas');
-    ctx.innerHTML = '';
-    ctx.appendChild(canvas);
+    canvas.style.width = '100%';
+    canvas.style.height = '400px';
+    chartContainer.appendChild(canvas);
 
     let currentPoints = 1200; // Punto di partenza
     const points = [1200];
     const sortedMatches = [...matches].sort((a, b) => new Date(a.date) - new Date(b.date));
 
     sortedMatches.forEach(match => {
-       if (match.winner === playerName) {
-            currentPoints += match.points_gained;
+        if (match.winner === playerName) {
+            currentPoints += match.points_gained || match.winner_points_change;
         } else {
-            currentPoints -= match.points_lost;
+            currentPoints -= match.points_lost || match.loser_points_change;
         }
         points.push(currentPoints);
     });
@@ -353,7 +415,15 @@ function createPointsChart(matches, playerName) {
             },
             scales: {
                 y: {
-                    beginAtZero: false
+                    beginAtZero: false,
+                    grid: {
+                        color: '#e0e0e0'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: '#e0e0e0'
+                    }
                 }
             }
         }
@@ -416,10 +486,12 @@ async function handleLogin(e) {
         if (data.success) {
             localStorage.setItem('authToken', data.token);
             document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('matchSection').style.display = 'block';
+            const matchSection = document.getElementById('matchSection');
+            matchSection.style.display = 'block';
             if (data.is_admin) {
                 document.getElementById('registerLink').style.display = 'block';
             }
+            await loadMatchesForDeletion();
         } else {
             alert('Login fallito: ' + data.error);
         }
@@ -455,29 +527,149 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Funzione helper per le chiamate API
 async function apiCall(endpoint, options = {}) {
-    const defaultOptions = {
-        headers: {
+    try {
+        const defaultHeaders = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-        },
-        mode: 'cors',
-        credentials: isProduction ? 'omit' : 'include'
-    };
+        };
 
-    const finalOptions = {
-        ...defaultOptions,
-        ...options,
-        headers: {
-            ...defaultOptions.headers,
-            ...options.headers
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            ...options,
+            headers: {
+                ...defaultHeaders,
+                ...options.headers
+            },
+            mode: 'cors',
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
         }
-    };
 
-    try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, finalOptions);
         return await response.json();
     } catch (error) {
-        console.error('Errore nella chiamata API:', error);
+        console.error('Dettagli errore completo:', {
+            message: error.message,
+            stack: error.stack,
+            response: error.response
+        });
         throw error;
     }
 }
+
+async function loadAllMatches() {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    try {
+        const result = await apiCall('/api/matches/all', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (result.success) {
+            const allMatchesHistory = document.getElementById('allMatchesHistory');
+            allMatchesHistory.innerHTML = `
+                <div class="match-history-wrapper">
+                    <table class="match-history-table" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Vincitore</th>
+                                <th>Perdente</th>
+                                <th>Punti Scambiati</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${result.matches.map(match => {
+                                const matchDate = new Date(match.date).toLocaleString('it-IT');
+                                return `
+                                    <tr>
+                                        <td>${matchDate}</td>
+                                        <td>${match.winner}</td>
+                                        <td>${match.loser}</td>
+                                        <td>+${match.points_gained || match.winner_points_change}/-${match.points_lost || match.loser_points_change}</td>
+                                        <td style="text-align: center;">
+                                            <a href="#" onclick="event.preventDefault(); deleteMatch('${match._id}');" class="delete-link">
+                                                Elimina
+                                            </a>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        } else {
+            console.error('Errore nel caricamento delle partite:', result.error);
+            document.getElementById('allMatchesHistory').innerHTML = '<p>Errore nel caricamento delle partite</p>';
+        }
+    } catch (error) {
+        console.error('Errore nel caricamento delle partite:', error);
+        document.getElementById('allMatchesHistory').innerHTML = '<p>Errore nel caricamento delle partite</p>';
+    }
+}
+
+async function loadMatchesForDeletion() {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    const playerNameElement = document.getElementById('playerName');
+    if (!playerNameElement || !playerNameElement.textContent) {
+        document.getElementById('matchSelect').innerHTML = '<option value="">Seleziona prima un giocatore</option>';
+        return;
+    }
+
+    const playerName = playerNameElement.textContent.replace('Statistiche di ', '');
+
+    try {
+        const result = await apiCall(`/api/player/${playerName}/history`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (result.success) {
+            const matchSelect = document.getElementById('matchSelect');
+            matchSelect.innerHTML = '<option value="">Seleziona una partita</option>';
+            
+            if (result.matches && result.matches.length > 0) {
+                result.matches
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .forEach(match => {
+                        const matchDate = new Date(match.date).toLocaleString('it-IT');
+                        const points = match.winner === playerName ? 
+                            match.points_gained || match.winner_points_change : 
+                            match.points_lost || match.loser_points_change;
+                        const opponent = match.winner === playerName ? match.loser : match.winner;
+                        const option = document.createElement('option');
+                        option.value = match.id;
+                        option.textContent = `${matchDate} - vs ${opponent} (${points > 0 ? '+' : ''}${points} punti)`;
+                        matchSelect.appendChild(option);
+                    });
+            } else {
+                matchSelect.innerHTML = '<option value="">Nessuna partita disponibile</option>';
+            }
+        } else {
+            console.error('Errore nel caricamento delle partite:', result.error);
+            document.getElementById('matchSelect').innerHTML = '<option value="">Errore nel caricamento delle partite</option>';
+        }
+    } catch (error) {
+        console.error('Dettagli errore completo:', {
+            message: error.message,
+            stack: error.stack,
+            response: error.response
+        });
+        document.getElementById('matchSelect').innerHTML = '<option value="">Errore nel caricamento delle partite</option>';
+    }
+}
+
+// Aggiungiamo anche un event listener per ricaricare le partite quando il form è visibile
+document.getElementById('matchSection').addEventListener('show', loadMatchesForDeletion);
