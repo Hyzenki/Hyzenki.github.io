@@ -38,7 +38,17 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-DB_PATH = 'tennis.db'
+# Configurazione del percorso del database
+if os.environ.get('RENDER'):
+    # Su Render, usa il percorso persistente
+    DB_PATH = '/opt/render/project/src/tennis.db'
+else:
+    # In locale, usa il percorso relativo
+    DB_PATH = 'tennis.db'
+
+# Assicurati che la directory esista in produzione
+if os.environ.get('RENDER'):
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
 # Chiave segreta per JWT
 JWT_SECRET = 'your-secret-key'  # In produzione, usa una chiave sicura e salvala in env vars
