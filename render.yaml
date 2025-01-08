@@ -1,11 +1,13 @@
 services:
   - type: web
-    name: pldg-atp-backend
+    name: pldg-atp-rankings
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn server:app --bind 0.0.0.0:$PORT --workers 4
+    startCommand: python backend/server.py
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.9.0
-      - key: DATABASE_URL
-        sync: false 
+      - key: RENDER
+        value: true
+    disk:
+      name: sqlite-data
+      mountPath: /opt/render/project/src
+      sizeGB: 1 
