@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
-// Aggiungi queste funzioni
+
 async function showPlayerHistory(playerName) {
     try {
         const token = localStorage.getItem('authToken');
@@ -456,6 +456,7 @@ async function registerTrustedUser(username, password) {
         const data = await response.json();
         if (data.success) {
             alert('Utente affidato registrato con successo');
+            closeRegisterForm(); // chiude la modale
         } else {
             alert('Errore nella registrazione: ' + data.error);
         }
@@ -463,6 +464,10 @@ async function registerTrustedUser(username, password) {
         console.error('Errore:', error);
         alert('Errore nella comunicazione con il server');
     }
+}
+
+function closeRegisterForm() {
+    document.getElementById("registerSection").style.display = "none";
 }
 
 async function handleLogin(e) {
@@ -489,8 +494,11 @@ async function handleLogin(e) {
             const matchSection = document.getElementById('matchSection');
             matchSection.style.display = 'block';
             if (data.is_admin) {
-                document.getElementById('registerLink').style.display = 'block';
+                document.getElementById('registerLink').style.display = "inline-block";
             }
+            document.getElementById("loginLink").style.display = "none";
+            document.getElementById("loginSection").style.display = "none";
+            document.getElementById("matchSection").style.display = "block";
             await loadMatchesForDeletion();
         } else {
             alert('Login fallito: ' + data.error);
@@ -506,19 +514,31 @@ function toggleLoginForm() {
     loginSection.style.display = loginSection.style.display === 'none' ? 'block' : 'none';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+/* document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('loginLink').addEventListener('click', (e) => {
         e.preventDefault();
         toggleLoginForm();
     });
-});
+}); */
 
 function toggleRegisterForm() {
     const registerSection = document.getElementById('registerSection');
     registerSection.style.display = registerSection.style.display === 'none' ? 'block' : 'none';
 }
 
+/* document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('registerLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleRegisterForm();
+    });
+}); */
+
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('loginLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleLoginForm();
+    });
+
     document.getElementById('registerLink').addEventListener('click', (e) => {
         e.preventDefault();
         toggleRegisterForm();
