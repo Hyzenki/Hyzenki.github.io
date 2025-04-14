@@ -272,9 +272,9 @@ def record_match():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/register', methods=['POST'])
+@require_auth
 def register_user():
-    auth_token = request.headers.get('Authorization')
-    if not auth_token or 'admin-token' not in auth_token:
+    if not request.user.get('is_admin'):
         return jsonify({
             'success': False,
             'error': 'Solo gli admin possono registrare nuovi utenti'
@@ -295,7 +295,7 @@ def register_user():
                 INSERT INTO users (username, password_hash, is_trusted)
                 VALUES (?, ?, ?)
             ''', (username, hashed_password, is_trusted))
-            
+        
         return jsonify({
             'success': True,
             'message': 'Utente registrato con successo'

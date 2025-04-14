@@ -1,0 +1,114 @@
+2025-04-13 22:14:01,617 - INFO - Database inizializzato con successo
+2025-04-13 22:14:02,982 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.26:5000
+2025-04-13 22:14:02,982 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-13 22:14:02,983 - INFO -  * Restarting with stat
+2025-04-13 22:14:03,307 - INFO - Database inizializzato con successo
+2025-04-13 22:14:03,328 - WARNING -  * Debugger is active!
+2025-04-13 22:14:03,339 - INFO -  * Debugger PIN: 111-860-508
+2025-04-13 22:14:10,456 - INFO - 127.0.0.1 - - [13/Apr/2025 22:14:10] "GET / HTTP/1.1" 200 -
+2025-04-13 22:14:10,611 - INFO - 127.0.0.1 - - [13/Apr/2025 22:14:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-13 22:14:17,847 - INFO - 192.168.1.26 - - [13/Apr/2025 22:14:17] "GET / HTTP/1.1" 200 -
+2025-04-13 22:14:17,958 - INFO - 192.168.1.26 - - [13/Apr/2025 22:14:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-13 22:14:35,791 - INFO - 127.0.0.1 - - [13/Apr/2025 22:14:35] "GET / HTTP/1.1" 200 -
+2025-04-13 22:15:06,631 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:06] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:15:06,942 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:06] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:15:36,264 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:36] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:15:36,587 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:36] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:15:43,844 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:43] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-04-13 22:15:44,157 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:44] "[31m[1mPOST /api/login HTTP/1.1[0m" 401 -
+2025-04-13 22:15:48,741 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:48] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-04-13 22:15:49,391 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:49] "POST /api/login HTTP/1.1" 200 -
+2025-04-13 22:15:49,395 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:49] "OPTIONS /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:15:49,398 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:49] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:15:54,908 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:54] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-04-13 22:15:55,578 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:55] "POST /api/login HTTP/1.1" 200 -
+2025-04-13 22:15:55,581 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:55] "OPTIONS /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:15:55,585 - INFO - 127.0.0.1 - - [13/Apr/2025 22:15:55] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:42:48,616 - INFO - Database inizializzato con successo
+2025-04-13 22:42:49,955 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.26:5000
+2025-04-13 22:42:49,955 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-13 22:42:49,960 - INFO -  * Restarting with stat
+2025-04-13 22:42:50,267 - INFO - Database inizializzato con successo
+2025-04-13 22:42:50,276 - WARNING -  * Debugger is active!
+2025-04-13 22:42:50,284 - INFO -  * Debugger PIN: 145-956-033
+2025-04-13 22:42:56,574 - INFO - 127.0.0.1 - - [13/Apr/2025 22:42:56] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:42:56,885 - INFO - 127.0.0.1 - - [13/Apr/2025 22:42:56] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:42:58,339 - INFO - 127.0.0.1 - - [13/Apr/2025 22:42:58] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:42:58,653 - INFO - 127.0.0.1 - - [13/Apr/2025 22:42:58] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:42:58,916 - INFO - 127.0.0.1 - - [13/Apr/2025 22:42:58] "OPTIONS /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:42:58,921 - INFO - 127.0.0.1 - - [13/Apr/2025 22:42:58] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:43:04,018 - INFO - 127.0.0.1 - - [13/Apr/2025 22:43:04] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-04-13 22:43:04,603 - INFO - 127.0.0.1 - - [13/Apr/2025 22:43:04] "POST /api/login HTTP/1.1" 200 -
+2025-04-13 22:43:04,916 - INFO - 127.0.0.1 - - [13/Apr/2025 22:43:04] "OPTIONS /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:43:04,919 - INFO - 127.0.0.1 - - [13/Apr/2025 22:43:04] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:43:23,205 - INFO - 127.0.0.1 - - [13/Apr/2025 22:43:23] "OPTIONS /api/register HTTP/1.1" 200 -
+2025-04-13 22:43:23,511 - INFO - 127.0.0.1 - - [13/Apr/2025 22:43:23] "[31m[1mPOST /api/register HTTP/1.1[0m" 401 -
+2025-04-13 22:44:52,877 - INFO -  * Detected change in 'c:\\Users\\Fede\\Desktop\\HyzenkiGithub\\test\\server.py', reloading
+2025-04-13 22:44:52,901 - INFO -  * Restarting with stat
+2025-04-13 22:44:53,172 - INFO - Database inizializzato con successo
+2025-04-13 22:44:53,182 - WARNING -  * Debugger is active!
+2025-04-13 22:44:53,191 - INFO -  * Debugger PIN: 145-956-033
+2025-04-13 22:45:02,993 - INFO - 127.0.0.1 - - [13/Apr/2025 22:45:02] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:45:03,307 - INFO - 127.0.0.1 - - [13/Apr/2025 22:45:03] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:45:08,193 - INFO - 127.0.0.1 - - [13/Apr/2025 22:45:08] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-04-13 22:45:08,428 - INFO - 127.0.0.1 - - [13/Apr/2025 22:45:08] "POST /api/login HTTP/1.1" 200 -
+2025-04-13 22:45:15,319 - INFO - 127.0.0.1 - - [13/Apr/2025 22:45:15] "OPTIONS /api/register HTTP/1.1" 200 -
+2025-04-13 22:45:15,958 - INFO - 127.0.0.1 - - [13/Apr/2025 22:45:15] "POST /api/register HTTP/1.1" 200 -
+2025-04-13 22:47:52,673 - INFO - 127.0.0.1 - - [13/Apr/2025 22:47:52] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:47:52,984 - INFO - 127.0.0.1 - - [13/Apr/2025 22:47:52] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:51:37,214 - INFO - Database inizializzato con successo
+2025-04-13 22:51:38,506 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.26:5000
+2025-04-13 22:51:38,506 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-13 22:51:38,507 - INFO -  * Restarting with stat
+2025-04-13 22:51:38,759 - INFO - Database inizializzato con successo
+2025-04-13 22:51:38,768 - WARNING -  * Debugger is active!
+2025-04-13 22:51:38,774 - INFO -  * Debugger PIN: 145-956-033
+2025-04-13 22:51:43,453 - INFO - 127.0.0.1 - - [13/Apr/2025 22:51:43] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:51:43,765 - INFO - 127.0.0.1 - - [13/Apr/2025 22:51:43] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:51:48,673 - INFO - 127.0.0.1 - - [13/Apr/2025 22:51:48] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-04-13 22:51:48,866 - INFO - 127.0.0.1 - - [13/Apr/2025 22:51:48] "POST /api/login HTTP/1.1" 200 -
+2025-04-13 22:51:55,564 - INFO - 127.0.0.1 - - [13/Apr/2025 22:51:55] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:51:55,832 - INFO - 127.0.0.1 - - [13/Apr/2025 22:51:55] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:51:55,877 - INFO - 127.0.0.1 - - [13/Apr/2025 22:51:55] "OPTIONS /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:51:56,189 - INFO - 127.0.0.1 - - [13/Apr/2025 22:51:56] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 22:54:24,544 - INFO - 127.0.0.1 - - [13/Apr/2025 22:54:24] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:54:24,860 - INFO - 127.0.0.1 - - [13/Apr/2025 22:54:24] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 22:54:29,692 - INFO - 127.0.0.1 - - [13/Apr/2025 22:54:29] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-04-13 22:54:29,881 - INFO - 127.0.0.1 - - [13/Apr/2025 22:54:29] "POST /api/login HTTP/1.1" 200 -
+2025-04-13 23:00:17,064 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:17] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:00:17,373 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:17] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:00:22,309 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:22] "OPTIONS /api/login HTTP/1.1" 200 -
+2025-04-13 23:00:22,499 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:22] "POST /api/login HTTP/1.1" 200 -
+2025-04-13 23:00:30,785 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:30] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:00:31,051 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:31] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 23:00:31,097 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:31] "OPTIONS /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 23:00:31,408 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:31] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 23:00:33,786 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:33] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:00:34,103 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:34] "GET /api/player/Mura/history HTTP/1.1" 200 -
+2025-04-13 23:00:34,370 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:34] "OPTIONS /api/player/Mura/history HTTP/1.1" 200 -
+2025-04-13 23:00:34,373 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:34] "GET /api/player/Mura/history HTTP/1.1" 200 -
+2025-04-13 23:00:36,362 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:36] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:00:36,672 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:36] "GET /api/player/Bova/history HTTP/1.1" 200 -
+2025-04-13 23:00:36,920 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:36] "OPTIONS /api/player/Bova/history HTTP/1.1" 200 -
+2025-04-13 23:00:37,232 - INFO - 127.0.0.1 - - [13/Apr/2025 23:00:37] "GET /api/player/Bova/history HTTP/1.1" 200 -
+2025-04-13 23:02:00,102 - INFO - 127.0.0.1 - - [13/Apr/2025 23:02:00] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:02:01,780 - INFO - 127.0.0.1 - - [13/Apr/2025 23:02:01] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:12:32,671 - INFO - 127.0.0.1 - - [13/Apr/2025 23:12:32] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:12:32,985 - INFO - 127.0.0.1 - - [13/Apr/2025 23:12:32] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:47:54,068 - INFO - 127.0.0.1 - - [13/Apr/2025 23:47:54] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:47:54,380 - INFO - 127.0.0.1 - - [13/Apr/2025 23:47:54] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:48:09,892 - INFO - 127.0.0.1 - - [13/Apr/2025 23:48:09] "OPTIONS /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:48:09,896 - INFO - 127.0.0.1 - - [13/Apr/2025 23:48:09] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:48:12,384 - INFO - 127.0.0.1 - - [13/Apr/2025 23:48:12] "GET /api/rankings HTTP/1.1" 200 -
+2025-04-13 23:48:12,650 - INFO - 127.0.0.1 - - [13/Apr/2025 23:48:12] "GET /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 23:48:12,690 - INFO - 127.0.0.1 - - [13/Apr/2025 23:48:12] "OPTIONS /api/player/Pavo/history HTTP/1.1" 200 -
+2025-04-13 23:48:13,008 - INFO - 127.0.0.1 - - [13/Apr/2025 23:48:13] "GET /api/player/Pavo/history HTTP/1.1" 200 -

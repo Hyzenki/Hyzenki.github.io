@@ -84,6 +84,36 @@ body {
 }
 
 .about,
+.made {
+    margin: 4rem 0;
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.made-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.made-item {
+    background-color: var(--white);
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.made-item:hover {
+    transform: translateY(-5px);
+}
+
+
 .skills {
     margin: 4rem 0;
 }
@@ -112,6 +142,8 @@ h2 {
 .skill-item:hover {
     transform: translateY(-5px);
 }
+
+
 
 footer {
     background-color: var(--primary-color);
