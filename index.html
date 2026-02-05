@@ -10,11 +10,10 @@
     <nav class="navbar">
         <div class="nav-content">
             <a href="index.html" class="nav-logo">Hyzenki</a>
-            <button class="mobile-menu-button" aria-label="Toggle menu" aria-expanded="false">☰</button>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
+            <button class="mobile-menu-button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-navigation">☰</button>
+            <div class="nav-links" id="primary-navigation">
                 <a href="progetti.html">Progetti</a>
-                <a href="PLDG_ATP.html">PLDG ATP</a>
+                <a href="PLDG_ATP.html">PLDG</a>
                 <a href="contatti.html">Contatti</a>
             </div>
         </div>
@@ -23,15 +22,25 @@
     <main class="container">
         <section class="hero">
             <h1>Benvenuto nella mia Caverna</h1>
-            <p>Matematico e altre cose</p>
+            <p>Matematico, dev e gamer con vibe da terminale ✨</p>
         </section>
 
-        <section class="about">
+        <section class="about glass-panel">
             <h2>Chi Sono</h2>
-            <p>Hyzenki, detto Zizzi, colui che programma e gioca ad Apex Legends</p>
+            <p>Hyzenki, detto Zizzi: costruisco progetti, analizzo dati e ogni tanto torno su Apex Legends.</p>
         </section>
 
-        <section class="made">
+        <section class="ui-enhancement glass-panel">
+            <h2>ASCII Mood</h2>
+            <div class="ascii-wrap">
+<pre class="ascii-art">╭(◕ ◡ ◕)╮  SYSTEM READY
+├─ coding.exe ............ OK
+├─ creativity.dll ........ LOADED
+└─ fun-mode.sh ........... RUNNING ✨</pre>
+            </div>
+        </section>
+
+        <section class="made glass-panel">
             <h2>Creato Con</h2>
             <div class="made-grid">
                 <div class="made-item">HTML & CSS</div>
@@ -43,7 +52,7 @@
             </div>
         </section>
 
-        <section class="skills">
+        <section class="skills glass-panel">
             <h2>Competenze</h2>
             <div class="skills-grid">
                 <div class="skill-item">MatLab</div>
@@ -62,6 +71,6 @@
         <p>&copy; 2025 Tutti i diritti riservati alla PLDG.</p>
     </footer>
 
-    <script src="navigation.js"></script>
+    <script src="navigation.js" defer></script>
 </body>
-</html> 
+</html>
