@@ -349,6 +349,7 @@ footer {
         text-shadow: 0 0 14px rgba(180, 255, 197, 0.45);
         transition: transform 0.2s ease, text-shadow 0.2s ease;
     }
+}
 
     .ascii-wrap:hover .ascii-art {
         animation: asciiGlow 0.9s ease;
