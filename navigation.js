@@ -52,4 +52,41 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', closeMenu);
     });
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+        return;
+    }
+
+    const interactiveCards = document.querySelectorAll('.glass-panel, .made-item, .skill-item');
+    interactiveCards.forEach((card) => {
+        card.addEventListener('mousemove', (event) => {
+            const rect = card.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const rotateX = ((y / rect.height) - 0.5) * -5;
+            const rotateY = ((x / rect.width) - 0.5) * 5;
+            card.style.transform = `perspective(800px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
+
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    document.body.appendChild(trail);
+
+    let trailTimeout;
+    window.addEventListener('mousemove', (event) => {
+        trail.style.left = `${event.clientX}px`;
+        trail.style.top = `${event.clientY}px`;
+        trail.classList.add('visible');
+
+        clearTimeout(trailTimeout);
+        trailTimeout = setTimeout(() => {
+            trail.classList.remove('visible');
+        }, 120);
+    });
 });
