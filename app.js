@@ -1,6 +1,18 @@
 let players = [];
 let currentChart = null; // Variabile globale per tenere traccia del grafico corrente
 
+
+const BLOCKED_NAME_PATTERNS = ['codex', 'optimize-and-improve-performance-'];
+
+function isBlockedName(name) {
+    const normalizedName = String(name || '').toLowerCase();
+    return BLOCKED_NAME_PATTERNS.some((pattern) => normalizedName.includes(pattern));
+}
+
+function sanitizePlayers(playersList = []) {
+    return playersList.filter((player) => !isBlockedName(player.name));
+}
+
 class Player {
     constructor(name, points = 1200, matchesWon = 0) {
         this.name = name;
@@ -41,9 +53,9 @@ async function loadRankings() {
             credentials: isProduction ? 'omit' : 'include'
         });
         const result = await response.json();
-        
+
         if (result.success && result.data) {
-            updateRankingsTable(result.data);
+            updateRankingsTable(sanitizePlayers(result.data));
         } else {
             console.error('Errore nel caricamento della classifica:', result.error);
             alert('Errore nel caricamento della classifica');
@@ -57,20 +69,20 @@ async function loadRankings() {
 function updateRankingsTable(players) {
     const rankingsTable = document.getElementById('rankings');
     rankingsTable.innerHTML = '';
-    
+
     players.forEach((player, index) => {
         const row = document.createElement('tr');
-        
+
         const playerLink = document.createElement('a');
         playerLink.href = '#';
         playerLink.className = 'player-link';
         playerLink.textContent = player.name;
-        
+
         playerLink.onclick = function(e) {
             e.preventDefault();
             showPlayerHistory(player.name);
         };
-        
+
         row.innerHTML = `
             <td class="text-center">${index + 1}</td>
             <td></td>
@@ -78,7 +90,7 @@ function updateRankingsTable(players) {
             <td class="text-center">${player.matches_won}</td>
             <td class="text-center">${player.matches_lost}</td>
         `;
-        
+
         row.cells[1].appendChild(playerLink);
         rankingsTable.appendChild(row);
     });
@@ -102,7 +114,7 @@ async function handleMatch(winner, loser) {
                 loser: loser
             })
         });
-        
+
         if (result.success) {
             const pointsExchange = result.pointsExchange;
             const message = `Match registrato!\n${winner} ha guadagnato ${pointsExchange.won} punti\n${loser} ha perso ${pointsExchange.lost} punti`;
@@ -132,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
 
-    
+
 
     document.getElementById('matchForm').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -206,25 +218,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function showPlayerHistory(playerName) {
     try {
+        if (isBlockedName(playerName)) {
+            return;
+        }
         const token = localStorage.getItem('authToken');
         const isLoggedIn = token && token !== 'undefined' && token !== 'null';
-        
+
         const rankingsResponse = await fetch(`${API_BASE_URL}/api/rankings`);
         const rankingsResult = await rankingsResponse.json();
         const playerData = rankingsResult.data.find(p => p.name === playerName);
 
         const historyResponse = await fetch(`${API_BASE_URL}/api/player/${playerName}/history`);
         const historyResult = await historyResponse.json();
-        
+
         if (historyResult.success && playerData) {
             const playerDetails = document.getElementById('playerDetails');
             const playerHistory = document.getElementById('playerHistory');
             const playerStats = document.getElementById('playerStats');
             const playerNameH2 = document.getElementById('playerName');
-            
+
             playerDetails.style.display = 'block';
             playerNameH2.textContent = `Statistiche di ${playerName}`;
-            
+
             // Statistiche del giocatore dalla leaderboard
             playerStats.innerHTML = `
                 <div class="stats-container">
@@ -263,7 +278,7 @@ async function showPlayerHistory(playerName) {
                                 ${historyResult.matches.map(match => {
                                     const matchDate = new Date(match.date).toLocaleString('it-IT');
                                     let result, opponent, points;
-                                    
+
                                     if (match.winner === playerName) {
                                         result = 'Vittoria';
                                         opponent = match.loser;
@@ -351,8 +366,8 @@ async function deleteMatch(matchId) {
 
 function calculateWinRate(wins, losses, draws) {
     const totalMatches = wins + losses + draws;
-    return totalMatches > 0 
-        ? Math.round((wins / totalMatches) * 100) 
+    return totalMatches > 0
+        ? Math.round((wins / totalMatches) * 100)
         : 0;
 }
 
@@ -372,7 +387,7 @@ function createPointsChart(matches, playerName) {
 
     // Pulisci il contenitore
     chartContainer.innerHTML = '';
-    
+
     // Crea un nuovo canvas con dimensioni specifiche
     const canvas = document.createElement('canvas');
     canvas.style.width = '100%';
@@ -487,7 +502,7 @@ async function handleLogin(e) {
         });
 
         const data = await response.json();
-        
+
         if (data.success) {
             localStorage.setItem('authToken', data.token);
             document.getElementById('loginSection').style.display = 'none';
@@ -659,14 +674,14 @@ async function loadMatchesForDeletion() {
         if (result.success) {
             const matchSelect = document.getElementById('matchSelect');
             matchSelect.innerHTML = '<option value="">Seleziona una partita</option>';
-            
+
             if (result.matches && result.matches.length > 0) {
                 result.matches
                     .sort((a, b) => new Date(b.date) - new Date(a.date))
                     .forEach(match => {
                         const matchDate = new Date(match.date).toLocaleString('it-IT');
-                        const points = match.winner === playerName ? 
-                            match.points_gained || match.winner_points_change : 
+                        const points = match.winner === playerName ?
+                            match.points_gained || match.winner_points_change :
                             match.points_lost || match.loser_points_change;
                         const opponent = match.winner === playerName ? match.loser : match.winner;
                         const option = document.createElement('option');
